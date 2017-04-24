@@ -38,7 +38,6 @@ createGoogleSearchLink <- function(query) {
 
 
 
-
 ## Driver ##
 tables = read_html(listing_website) %>% html_nodes("table") %>% html_table(fill = TRUE, header = TRUE)
 
@@ -67,8 +66,11 @@ m <- leaflet() %>%
          addTiles(layerId = "tiles") %>% 
          addCircleMarkers(lng = locations$lon, 
                           lat = locations$lat, 
-                          radius = locations$FamilyN / 2.5 + 2,
-                          popup = locations$label) %>%
+                          radius = locations$FamilyN * 1.5 + 2,
+                          popup = ) %>%
+         addMarkers(lng = locations$lon, 
+                   lat = locations$lat,
+                   popup = locations$label) %>%
          addProviderTiles(providers$Esri.NatGeoWorldMap)
 
 
