@@ -3,12 +3,8 @@ library(leaflet)
 library(RJSONIO)
 library(htmlwidgets)
 
-listing_website = "http://kingswoodrummage.com/listings/"
-
-
 # Robbed from here: http://stackoverflow.com/questions/32504880/street-address-to-geolocation-lat-long
 # Thank you kind stranger
-
 geocodeAddress <- function(address) {
     url <- "http://maps.google.com/maps/api/geocode/json?address="
     url <- URLencode(paste(url, address, "&sensor=false", sep = ""))
@@ -23,7 +19,6 @@ geocodeAddress <- function(address) {
     out
 }
 
-
 processDateString <- function(input) {
     str = gsub("PMA", "PM</p><p>A", input)
     str = gsub("AMA", "AM</p><p>A", str)
@@ -37,8 +32,10 @@ createGoogleSearchLink <- function(query) {
 }
 
 
-
 ## Driver ##
+
+listing_website = "http://kingswoodrummage.com/listings/"
+
 tables = read_html(listing_website) %>% html_nodes("table") %>% html_table(fill = TRUE, header = TRUE)
 
 locations = tables[[2]]
@@ -66,14 +63,12 @@ m <- leaflet() %>%
          addTiles(layerId = "tiles") %>% 
          addCircleMarkers(lng = locations$lon, 
                           lat = locations$lat, 
-                          radius = locations$FamilyN * 1.5 + 2,
+                          radius = locations$FamilyN * 2.5,
                           popup = ) %>%
          addMarkers(lng = locations$lon, 
-                   lat = locations$lat,
-                   popup = locations$label) %>%
+                    lat = locations$lat,
+                    popup = locations$label) %>%
          addProviderTiles(providers$Esri.NatGeoWorldMap)
 
 
-saveWidget(m, file="map.html")
-
-
+saveWidget(m, file = "map.html")
